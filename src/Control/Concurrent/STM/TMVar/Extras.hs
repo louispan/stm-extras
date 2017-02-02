@@ -7,13 +7,16 @@ import Control.Concurrent.STM.TMVar
 -- Returns what was in the TMVar (if exists)
 forceSwapTMVar :: TMVar a -> a -> STM (Maybe a)
 forceSwapTMVar v a = (Just <$> swapTMVar v a) `orElse` (const Nothing <$> putTMVar v a)
+{-# INLINABLE #-}
 
 -- | Block until TMVar is empty.
 -- The argument a is used to try to put into TMVar, but is taken out again in the same
 -- transaction
 waitTillEmptyTMVar :: TMVar a -> a -> STM ()
 waitTillEmptyTMVar v a = putTMVar v a >> takeTMVar v >> pure ()
+{-# INLINABLE #-}
 
 -- | Block until TMVar is full.
 waitTillFullTMVar :: TMVar a -> STM ()
 waitTillFullTMVar v = takeTMVar v >>= putTMVar v
+{-# INLINABLE #-}
