@@ -7,4 +7,7 @@ Extra STM functions
 # Changelog
 
 * 0.1.0.0 ~ 0.1.0.2
-  - Added forceSwapTMVar, waitTillEmptyTMVar, waitTillFullTMVar
+ - Added forceSwapTMVar, waitTillEmptyTMVar, waitTillFullTMVar
+
+* 0.1.0.3
+ - Removed inline pragmas until I have actual benchmarks
