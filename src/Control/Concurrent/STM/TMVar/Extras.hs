@@ -27,6 +27,13 @@ modifyTMVar v k = do
     putTMVar v a'
     pure b
 
+maybeModifyTMVar :: TMVar a -> (a -> STM (Maybe a, b)) -> STM b
+maybeModifyTMVar v k = do
+    a <- takeTMVar v
+    (a', b) <- k a
+    maybe (pure ()) (putTMVar v) a'
+    pure b
+
 -- | Similar to 'Control.Concurrent.MVar.modifyMVar_'.
 -- Modify the contents of a TMVar.
 modifyTMVar_ :: TMVar a -> (a -> STM a) -> STM ()
@@ -34,3 +41,9 @@ modifyTMVar_ v k = do
     a <- takeTMVar v
     a' <- k a
     putTMVar v a'
+
+maybeModifyTMVar_ :: TMVar a -> (a -> STM (Maybe a)) -> STM ()
+maybeModifyTMVar_ v k = do
+    a <- takeTMVar v
+    a' <- k a
+    maybe (pure ()) (putTMVar v) a'
